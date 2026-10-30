@@ -14,9 +14,18 @@ function parseStyle(text) {
 function parseSize(text) {
   const t = text.toLowerCase();
   const full = t.match(/(\d{1,2})\s*x\s*(\d{1,2})/);
-  if (full) return { kind: 'full', size: `${full[1]}x${full[2]}` };
-  const bare = t.match(/\b(4|6|8)\b/);
-  if (bare) return { kind: 'full', size: `${bare[1]}x${bare[1]}` };
+  // A row is one arch: "bottom 6" or "6 on the bottom". Both arches named
+  // without an NxN size is unclear, so it holds. So is one arch plus an NxN
+  // size ("bottom 6x6"): it could mean either.
+  const hasTop = /\btop\b/.test(t);
+  const hasBottom = /\bbottom\b/.test(t);
+  const oneArch = hasTop !== hasBottom;
+  if (full && !oneArch) return { kind: 'full', size: `${full[1]}x${full[2]}` };
+  if (!full && oneArch) {
+    const row = t.match(/\b(?:top|bottom)\s+(\d{1,2})\b|\b(\d{1,2})\s+(?:on\s+(?:the\s+)?)?(?:top|bottom)\b/);
+    if (row) return { kind: 'row', position: hasTop ? 'top' : 'bottom', teeth: Number(row[1] ?? row[2]) };
+  }
+  // A bare number ("6 teeth") could be a row or a full set. Never guess.
   return { kind: null, size: null };
 }
 
