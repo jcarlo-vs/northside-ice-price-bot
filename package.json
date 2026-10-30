@@ -1,0 +1,12 @@
+{
+  "name": "northside-ice-price-bot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Paid test: a tiny version of a DM bot's price logic",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
