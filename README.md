@@ -1,4 +1,4 @@
-# Paid test: Northside Ice price bot ($100)
+#  Northside Ice price bot ($100)
 
 This is a tiny version of the price logic in our Instagram DM bot. The client and the prices are made up. The rule is the same as ours: **the bot never guesses a price. If it can't price exactly what the customer asked for, it holds the message for a person.**
 
